@@ -1,0 +1,36 @@
+
+<div class="container">
+
+  <div *ngIf="hendvedelseSendt">
+    <b>Takk for din hendvendelse, du vil høre fra oss så snart som mulig</b>
+  </div>
+
+  <form [formGroup]="skjema">
+
+    <div class="form-group">
+      <label for="email">Din email:</label><br />
+      <p class="alert alert-warning" [hidden]="skjema.controls.email.valid || (skjema.controls.email.pristine && !submitted)">Email er obligatorisk</p><br />
+      <input type="text" class="form-control" id="email" formControlName="email" /><br />
+    </div>
+
+
+    <div class="form-group">
+      <label for="kategori">Hva henvendelsen gjelder:</label><br />
+      <select name="kategori" class="form-control" formControlName="kategori">
+        <option *ngFor="let kategori of alleKategorier" [ngValue]="kategori">{{kategori.navn}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="beskjed">Din Henvendelse:</label><br />
+      <p class="alert alert-warning" [hidden]="skjema.controls.melding.valid || (skjema.controls.melding.pristine && !submitted)">Hendvendelse tekst er obligatorisk, og må være minst 10 tegn</p><br />
+      <textarea id="melding" class="form-control" formControlName="melding"></textarea><br />
+    </div>
+  </form>
+
+
+  <div class="form-group">
+    <button type="button" (click)="onSubmit()" [disabled]="!skjema.valid" class="btn btn-primary">Send hendvendelse</button>
+  </div>
+
+</div>

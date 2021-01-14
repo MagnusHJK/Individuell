@@ -1,0 +1,68 @@
+<div class="modal-content modal-lg">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{tittel}}</h4>
+  </div>
+  <div class="modal-body modal-lg">
+    <div>
+      <form [formGroup]="skjema">
+
+        <ng-container *ngIf="nyFAQSannhet">
+          <div class="form-group">
+            <select name="kategori" class="form-control" formControlName="kategori">
+              <option *ngFor="let kategori of alleKategorier" [ngValue]="kategori">{{kategori.navn}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Ny kategori?</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" aria-label="Ny kategori" [(ngModel)]="nyKategoriSannhet" (change)="kategoriValideringToggle()" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+              <input type="text" class="form-control" formControlName="nyKategori" placeholder="Ny kategori navn">
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="slettFAQSannhet">
+          <p>Sikker på at du vil <b style="color:red">slette</b> denne FAQ under <b>{{FAQ.kategori.navn}}?</b></p>
+        </ng-container>
+
+
+        <br />
+        <div class="form-group">
+          <h3>Spørsmål:</h3>
+          <textarea class="form-control" formControlName="sporsmal"></textarea>
+        </div>
+
+        <br />
+        <div class="form-group">
+          <h3>Svar:</h3>
+          <textarea class="form-control" formControlName="svar"></textarea>
+        </div>
+      </form>
+    </div>
+
+
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="tilbakemeldingOK" style="color:green"><b>{{tilbakemelding}}</b></div>
+
+    <button type="button" class="btn btn-dark" (click)="modal.close('Lukk')">Lukk</button>
+
+    <ng-container *ngIf="nyFAQSannhet">
+      <button type="button" class="btn btn-primary" [disabled]="!skjema.valid" (click)="opprettFAQ()">Opprett</button>
+    </ng-container>
+
+    <ng-container *ngIf="!nyFAQSannhet && !slettFAQSannhet">
+      <button type="button" class="btn btn-primary" [disabled]="!skjema.valid" (click)="endreFAQ()">Lagre</button>
+    </ng-container>
+
+    <ng-container *ngIf="slettFAQSannhet">
+      <button class="btn btn-danger" (click)="slettFAQ()">Slett</button>
+    </ng-container>
+
+  </div>
+</div>

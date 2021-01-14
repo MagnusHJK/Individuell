@@ -1,0 +1,55 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{tittel}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <p>
+        <b>Hendvendelse fra:</b> {{hendvendelse.email}} <br />
+        <b>Kategori:</b> {{hendvendelse.kategori.navn}}
+      </p>
+
+      <textarea class="form-control" [disabled]="true">{{hendvendelse.melding}}</textarea>
+    </div>
+
+
+    <ng-container *ngIf="svarHendvendelseOK; else elseHendvendelse">
+      <form [formGroup]="skjema">
+        <div class="form-group">
+          <b>Email tittel:</b><br />
+          <input type="text" id="emailTittel" class="form-control" formControlName="emailTittel" />
+        </div>
+
+        <div class="form-group">
+          <b>Svar:</b>
+          <textarea id="emailSvar" formControlName="emailSvar" class="form-control"></textarea>
+          <small class="form-text text-muted">Godtar html</small>
+        </div>
+      </form>
+    </ng-container>
+
+    <ng-template #elseHendvendelse>
+      <div class="form-group">
+        <p>
+          Hendvendelsen er <b style="color: red">Ubehandlet</b> sikker på at du vil slette?
+        </p>
+      </div>
+
+    </ng-template>
+
+
+
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="emailSendt"><b style="color:green">Email ble sendt!</b></div>
+    <button type="button" class="btn btn-dark" (click)="modal.close('Lukk')">Lukk</button>
+
+    <ng-container *ngIf="svarHendvendelseOK; else elseButton">
+      <button type="button" [disabled]="!skjema.valid" class="btn btn-primary" (click)="svarHendvendelse()">Send Svar</button>
+    </ng-container>
+
+    <ng-template #elseButton>
+      <button type="button" class="btn btn-danger" (click)="modal.close('Slett')">Slett</button>
+    </ng-template>
+  </div>
+</div>
